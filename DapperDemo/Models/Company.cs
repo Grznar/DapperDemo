@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace DapperDemo.Models
 {
@@ -12,5 +13,7 @@ namespace DapperDemo.Models
         public string? City { get; set; }
         public string? State { get; set; }
         public string? PostalCode { get; set; }
+        [ValidateNever]
+        public List<Employee> Employees { get; set; }
     }
 }
