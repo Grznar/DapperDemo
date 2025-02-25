@@ -106,10 +106,10 @@ namespace DapperDemo.Controllers
                 return NotFound();
             }
 
-            Company company = _companyRepo.Find(id);
+            _companyRepo.Remove(id);
 
 
-            return View(company);
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Companies/Delete/5

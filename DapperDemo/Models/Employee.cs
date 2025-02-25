@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DapperDemo.Models
@@ -13,6 +14,7 @@ namespace DapperDemo.Models
         public string Title { get; set; }
         public int CompanyId { get; set; }
         [ForeignKey("CompanyId")]
+        [ValidateNever]
         public virtual Company Company { get; set; }
 
     }

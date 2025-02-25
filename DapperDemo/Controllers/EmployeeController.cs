@@ -13,13 +13,14 @@ namespace DapperDemo.Controllers
 {
     public class EmployeeController : Controller
     {
-
+        private readonly ICompanyRepository _companyRepo;
         private readonly IEmployeeRepository _employeeRepo;
         [BindProperty]
         public Employee Employee { get; set; }
-        public EmployeeController(IEmployeeRepository employeeRepo)
+        public EmployeeController(IEmployeeRepository employeeRepo, ICompanyRepository companyRepo)
         {
             _employeeRepo = employeeRepo;
+            _companyRepo = companyRepo;
         }
 
         // GET: Companies
@@ -46,6 +47,12 @@ namespace DapperDemo.Controllers
         // GET: Companies/Create
         public IActionResult Create()
         {
+            IEnumerable<SelectListItem> companyList =_companyRepo.GetAll().Select(i => new SelectListItem
+            {
+                Text = i.Name,
+                Value = i.CompanyId.ToString()
+            });
+            ViewBag.CompanyList = companyList;
             return View();
         }
 
@@ -72,6 +79,12 @@ namespace DapperDemo.Controllers
             {
                 return NotFound();
             }
+            IEnumerable<SelectListItem> companyList = _companyRepo.GetAll().Select(i => new SelectListItem
+            {
+                Text = i.Name,
+                Value = i.CompanyId.ToString()
+            });
+            ViewBag.CompanyList = companyList;
             Employee employee = _employeeRepo.Find(id);
             _employeeRepo.Update(employee);
             if (employee == null)
@@ -110,22 +123,13 @@ namespace DapperDemo.Controllers
                 return NotFound();
             }
 
-            Employee employee = _employeeRepo.Find(id);
-
-
-            return View(employee);
-        }
-
-        // POST: Companies/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
             _employeeRepo.Remove(id);
 
-            
+
             return RedirectToAction(nameof(Index));
         }
+
+       
 
        
     }
