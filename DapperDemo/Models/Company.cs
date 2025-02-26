@@ -1,19 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.ComponentModel.DataAnnotations;
+﻿using Dapper.Contrib.Extensions;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations.Schema;
+using TableAttribute = Dapper.Contrib.Extensions.TableAttribute;
+
 
 namespace DapperDemo.Models
 {
+    [Table("Companies")]
     public class Company
     {
         [Key]
         public int CompanyId { get; set; }
-        [Required]
+        
         public string Name { get; set; }
         public string? Address{ get; set; }
         public string? City { get; set; }
         public string? State { get; set; }
         public string? PostalCode { get; set; }
-        [ValidateNever]
-        public List<Employee> Employees { get; set; }
+        [Write(false)]
+        [NotMapped]
+        public List<Employee>? Employees { get; set; }
+
+        public Company()
+        {
+            Employees = new List<Employee>();
+        }
+        
     }
+     
 }
